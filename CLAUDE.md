@@ -24,18 +24,17 @@
 
 ## 技術スタック
 
-未定（FE/BE/言語/フレームワーク/DB/インフラは一切決まっていない）。ADR-0002 で決定予定。決定後に `docs/architecture.md` を作成して記載する。
+未定（FE/BE/言語/フレームワーク/DB/インフラは一切決まっていない）。今後 `docs/adr/` に ADR として記録し、決定後に `docs/architecture.md` を作成して記載する。
 
 ## ディレクトリ構成
 
 （技術スタック決定後に記載 / docs/architecture.md 参照）
 
-## 開発フロー
-
-- **Git運用**: GitHub Flow。`main` + 機能ブランチ → PR でマージ。`main` への直コミット/直pushは禁止。
-- **ブランチ命名**: `type/<issue番号>-<kebab要約>`（対応 issue があれば。例 `feat/12-receipt-ai-input`）／無ければ `type/<kebab要約>`（例 `chore/setup-claude-env`）。
-- **コミット規約**: Conventional Commits。形式は `type(scope): 日本語の要約`。type は feat,fix,docs,style,refactor,perf,test,build,ci,chore,revert。scope は任意の小文字ドメイン名（例 receipt, member, settlement, flowchart, branch, payment-source, auth）。本文は「なぜ」を日本語で。footer に `Closes #N`、破壊的変更は `BREAKING CHANGE:`。
-- **トレーラ/署名の禁止**: Co-Authored-By 等のトレーラ・署名（共著者表記・ツール署名）は付与しない。コミット・PR・issue いずれにも付けない。
+- **Git運用**: GitHub Flow。`main` + 機能ブランチ → PR でマージ。
+- **コミット / ブランチ / PR**: 形式は縛らない。変更内容が分かれば自由でよい（厳密な規約・検証は設けない）。ブランチ名に対応 issue 番号を含めると追跡しやすい（任意の推奨）。
+- **禁止事項（必ず守る）**:
+  - `main` への直コミット / 直 push は禁止（必ず機能ブランチ → PR 経由）。
+  - Co-Authored-By 等のトレーラ・署名（共著者表記・ツール署名）は付与しない（コミット・PR・issue いずれも）。
 
 詳細は [docs/workflow.md](docs/workflow.md) を参照。
 
@@ -45,31 +44,9 @@
 
 ## ドキュメント
 
-- [docs/requirement.md](docs/requirement.md) — 要件定義（目的・背景・ユーザーストーリー・機能要件・マイルストーン）
-- [docs/domain.md](docs/domain.md) — ドメイン用語の定義
-- docs/architecture.md — 技術スタック・ディレクトリ構成（ADR-0002 で技術スタック決定後に作成予定。現時点では未作成）
-- [docs/workflow.md](docs/workflow.md) — 開発フロー（GitHub Flow・ブランチ命名・Conventional Commits・ラベル体系）
+ドキュメントの案内は [docs/README.md](docs/README.md) を参照。主なもの:
 
-## Claude Code 運用
-
-### プロジェクト skill（`.claude/skills/`）
-
-- `/commit` — Conventional Commits 規約に沿ってコミットを作成する
-- `/push` — `main` への直push をガードしつつリモートへ push する
-- `/pr` — gh CLI で PR を作成する
-- `/issue` — gh CLI で issue を起票する
-- `/plan` — 作業計画を立てる
-- `/docs` — docs/ 配下のドキュメントを整備する
-
-### ビルトイン skill の活用
-
-- `/code-review` — 現在の差分のコードレビュー
-- `/review` — GitHub PR のレビュー
-- `/run` — アプリの起動確認
-- `/verify` — 変更の動作検証
-
-これらは再実装せず、プロジェクト skill から呼び出す/案内する形で活用する。
-
-### agents
-
-Phase2（技術スタック決定後）に `settlement-modeler`（債務簡約ロジック向け）等の追加を予定。
+- [docs/requirement.md](docs/requirement.md) — 要件定義
+- [docs/domain.md](docs/domain.md) — ドメイン用語・ドメインモデル
+- [docs/workflow.md](docs/workflow.md) — 開発フロー
+- [docs/adr/](docs/adr/) — アーキテクチャ決定記録（ADR）。技術スタックは今後ここに記録する
