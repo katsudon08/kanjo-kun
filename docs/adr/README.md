@@ -17,6 +17,25 @@
   - **結果**: 採用により生じる良い点・悪い点・今後の影響
 - 決定を覆す場合は、旧 ADR のステータスを更新し（例: 「ADR-XXXX により置換」）、新 ADR から旧 ADR を参照する。過去の ADR は削除せず履歴として残す。
 
+## ステータスの遷移
+
+```mermaid
+stateDiagram-v2
+    [*] --> proposed
+    proposed: 提案
+    proposed --> approved: 採用
+    proposed --> rejected: 却下
+    approved: 承認
+    approved --> deprecated: 非推奨化
+    approved --> superseded: 新しいADRで置換
+    rejected: 却下
+    deprecated: 非推奨
+    superseded: 置換
+    rejected --> [*]
+    deprecated --> [*]
+    superseded --> [*]
+```
+
 ## 一覧
 
 - まだ ADR はありません。最初の ADR として技術スタックの選定（`0001-...`）を記録する予定です。
