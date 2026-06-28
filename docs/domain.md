@@ -63,18 +63,28 @@ flowchart LR
 ### 関連（リレーション）
 
 ```mermaid
-erDiagram
-    HASHIGO["はしご（イベント）"] ||--o{ STORE_BRANCH["店舗ブランチ"] : "内包"
-    HASHIGO }o--o{ MEMBER["メンバー"] : "参加"
-    STORE_BRANCH }o--o{ STORE_BRANCH : "親子(分岐/合流)"
-    STORE_BRANCH }o--o{ MEMBER : "参加メンバー"
-    STORE_BRANCH ||--|| ACCOUNT["会計"] : "内包"
-    ACCOUNT ||--o{ MENU_ITEM["メニュー明細"] : "含む"
-    ACCOUNT }o--|| MEMBER : "代表者(立替)"
-    ACCOUNT ||--o{ PAYMENT_SOURCE["支払い源"] : "立替原資"
-    ACCOUNT ||--o{ SPLIT_SETTING["割り勘比重/定数金額"] : "割り勘設定"
-    ACCOUNT ||--o{ DEBT["債務"] : "按分で導出"
-    DEBT }o--|| SETTLEMENT["精算/送金リンク"] : "精算で解消"
+flowchart TD
+    HASHIGO["はしご（イベント）"]
+    SB["店舗ブランチ"]
+    ACC["会計"]
+    MEM["メンバー"]
+    MENU["メニュー明細"]
+    PS["支払い源"]
+    SPLIT["割り勘比重 / 定数金額"]
+    DEBT["債務"]
+    SETTLE["精算 / 送金リンク"]
+
+    HASHIGO -->|"1 → N（DAG）"| SB
+    HASHIGO -->|"N — N 参加"| MEM
+    SB -->|"親子 N — N（分岐/合流）"| SB
+    SB -->|"N — N 参加メンバー"| MEM
+    SB -->|"1 → 1 内包"| ACC
+    ACC -->|"1 → N"| MENU
+    ACC -->|"N → 1 代表者(立替)"| MEM
+    ACC -->|"1 → N 立替原資"| PS
+    ACC -->|"1 → N 割り勘設定"| SPLIT
+    ACC -->|"1 → N 按分で導出"| DEBT
+    DEBT -->|"N → 1 精算で解消"| SETTLE
 ```
 
 補足（図で表しきれない点）:
