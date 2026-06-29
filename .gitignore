@@ -17,7 +17,8 @@
 # Claude（ローカル個人設定）
 .claude/settings.local.json
 
-# 個人メモ（チーム共有しない AI 補助メモ。docs/ai/ 配下は git 追跡外）
-docs/ai/
+# 個人メモ（AI 補助メモ。docs/ai/ 配下は原則 git 追跡外。README のみチーム共有）
+docs/ai/*
+!docs/ai/README.md
 
 # スタック固有の無視設定（node_modules 等）は技術スタック決定後に追記
