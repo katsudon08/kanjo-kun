@@ -116,6 +116,6 @@ flowchart LR
 
 ## 関連ドキュメント
 
-- 要件定義: docs/requirement.md
+- 要件定義: docs/requirements.md
 - 開発フロー: docs/workflow.md
 - アーキテクチャ決定記録: docs/adr/

@@ -46,7 +46,7 @@
 
 ドキュメントの案内は [docs/README.md](docs/README.md) を参照。主なもの:
 
-- [docs/requirement.md](docs/requirement.md) — 要件定義
+- [docs/requirements.md](docs/requirements.md) — 要件定義
 - [docs/domain.md](docs/domain.md) — ドメイン用語・ドメインモデル
 - [docs/workflow.md](docs/workflow.md) — 開発フロー
 - [docs/adr/](docs/adr/) — アーキテクチャ決定記録（ADR）。技術スタックは今後ここに記録する

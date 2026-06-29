@@ -6,7 +6,7 @@
 
 チームに共有すべき内容は、以下のいずれかに昇格します。
 
-- `docs/requirement.md` — 要件定義
+- `docs/requirements.md` — 要件定義
 - `docs/domain.md` — ドメイン用語・ドメインモデル
 - `docs/workflow.md` — 開発フロー
 - `docs/adr/` — アーキテクチャ決定記録（技術的な意思決定）

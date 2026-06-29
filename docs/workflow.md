@@ -51,7 +51,7 @@ flowchart LR
 
 ## マイルストーン
 
-要件定義（docs/requirement.md）のロードマップを GitHub Milestone に対応づける。
+要件定義（docs/requirements.md）のロードマップを GitHub Milestone に対応づける。
 
 - **〜リリース（MVP）**: 店舗ブランチとフローチャート / メンバー管理 / FE・BE 作成 / 依存関係表示（権限別）
 - **〜第1回 機能追加**: 比重・定数金額管理 / 単一・複数の支払い源管理
@@ -60,6 +60,6 @@ flowchart LR
 ## 関連ドキュメント
 
 - 案内: docs/README.md
-- 要件定義: docs/requirement.md
+- 要件定義: docs/requirements.md
 - ドメインモデル: docs/domain.md
 - アーキテクチャ決定記録: docs/adr/
