@@ -46,20 +46,32 @@
 
 ```mermaid
 erDiagram
-    EVENT["はしご（イベント）"]
-    STORE["店舗（ノード・会計を内包）"]
-    MEMBER["メンバー"]
-    DEBT["債務（支払い関係）"]
+    EVENT["はしご（イベント）"] {
+        string name "名称"
+    }
+    MEMBER["メンバー"] {
+        string name "名前"
+    }
+    STORE["店舗（ノード・会計を内包）"] {
+        string name "店名"
+        datetime time "会計時刻"
+        int total "合計金額"
+        id parent FK "親店舗（ルートはなし）"
+        id payer FK "代表者（メンバー）"
+    }
+    DEBT["債務（支払い関係）"] {
+        id debtor FK "債務者（メンバー）"
+        int amount "金額 = 合計÷参加人数"
+        int paid "支払い済み額"
+        int remaining "残額 = max(0, 金額−支払い済み)"
+    }
     EVENT ||--o{ STORE : "店舗ツリー"
     EVENT ||--o{ MEMBER : "メンバー名簿"
-    STORE |o--o{ STORE : "親子(ブランチ)"
-    STORE }o--|| MEMBER : "代表者"
     STORE }o--o{ MEMBER : "参加メンバー"
     STORE ||--o{ DEBT : "店舗ごとに生成"
-    MEMBER ||--o{ DEBT : "債務者"
 ```
 
-債権者は「その店舗の代表者」であり導出されるため、図では債務者のみ明示している。
+親店舗（ブランチ）・代表者・債務者は**外部キー（FK）属性**として各エンティティ内に持たせ、関係線は主要な 4 本（はしご↔店舗・はしご↔メンバー・店舗↔参加メンバー・店舗↔債務）に絞っている。自己ループ（店舗の親子）は線にせず `parent` 属性で表す。債権者は「その店舗の代表者（`payer`）」であり導出される。
 
 ## 店舗グラフの例（分岐ツリー）
 
