@@ -17,4 +17,23 @@
 # Claude（ローカル個人設定）
 .claude/settings.local.json
 
-# スタック固有の無視設定（node_modules 等）は技術スタック決定後に追記
+# 依存関係
+node_modules/
+
+# フロントエンド（Vite / Storybook / Playwright）
+frontend/dist/
+frontend/storybook-static/
+frontend/playwright-report/
+frontend/test-results/
+*.tsbuildinfo
+
+# Go（テストバイナリ・カバレッジ・ビルド成果物・ワークスペース）
+*.test
+*.out
+/backend/bin/
+go.work
+go.work.sum
+
+# buf 生成コード（`buf generate` で再生成する。手で編集しない）
+backend/internal/gen/
+frontend/src/shared/gen/
