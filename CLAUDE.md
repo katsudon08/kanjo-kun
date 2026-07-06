@@ -51,4 +51,3 @@
 - [docs/domain.md](docs/domain.md) — ドメイン用語・ドメインモデル
 - [docs/workflow.md](docs/workflow.md) — 開発フロー
 - [docs/adr/](docs/adr/) — アーキテクチャ決定記録（ADR）。技術スタックは今後ここに記録する
-- [docs/ai/README.md](docs/ai/README.md) — AI 作業メモ（research.md / plan.md）の運用ルールとテンプレート。AI と進める調査・計画はここに整理し、確定した判断は ADR / PR / Issue / CLAUDE.md へ昇格する
