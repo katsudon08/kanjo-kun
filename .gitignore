@@ -21,19 +21,19 @@
 node_modules/
 
 # フロントエンド（Vite / Storybook / Playwright）
-frontend/dist/
-frontend/storybook-static/
-frontend/playwright-report/
-frontend/test-results/
+apps/frontend/dist/
+apps/frontend/storybook-static/
+apps/frontend/playwright-report/
+apps/frontend/test-results/
 *.tsbuildinfo
 
 # Go（テストバイナリ・カバレッジ・ビルド成果物・ワークスペース）
 *.test
 *.out
-/backend/bin/
+/apps/backend/bin/
 go.work
 go.work.sum
 
 # buf 生成コード（`buf generate` で再生成する。手で編集しない）
-backend/internal/gen/
-frontend/src/shared/gen/
+apps/backend/internal/gen/
+apps/frontend/src/shared/gen/

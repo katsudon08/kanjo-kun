@@ -29,7 +29,7 @@ Web SPA（React + TypeScript / Vite）＋ Go API（Connect-RPC / buf）＋ Postg
 
 ## ディレクトリ構成
 
-`backend/`（Go）＋ `frontend/`（React SPA・FSD）＋ `proto/`（protobuf）の分離型モノレポ。全体像は [docs/architecture.md](docs/architecture.md)、各ディレクトリの役割・配置ルールは [docs/directory-structure.md](docs/directory-structure.md) を参照。
+`apps/backend/`（Go）＋ `apps/frontend/`（React SPA・FSD）＋ `packages/proto/`（protobuf）の分離型モノレポ。全体像は [docs/architecture.md](docs/architecture.md)、各ディレクトリの役割・配置ルールは [docs/directory-structure.md](docs/directory-structure.md) を参照。
 
 - **Git運用**: GitHub Flow。`main` + 機能ブランチ → PR でマージ。
 - **コミット / ブランチ / PR**: 形式は縛らない。変更内容が分かれば自由でよい（厳密な規約・検証は設けない）。ブランチ名に対応 issue 番号を含めると追跡しやすい（任意の推奨）。

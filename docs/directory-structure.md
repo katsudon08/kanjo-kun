@@ -6,11 +6,13 @@
 
 ```
 kanjo-kun/
-├── backend/            # Go API サーバ（自前の go.mod・Go の設定を同梱）
-├── frontend/           # React SPA（Vite・FSD・JS/TS の設定を同梱）
-├── proto/              # protobuf と buf 設定（FE↔BE 契約）
+├── apps/
+│   ├── backend/        # Go API サーバ（自前の go.mod・Go の設定を同梱）
+│   └── frontend/       # React SPA（Vite・FSD・JS/TS の設定を同梱）
+├── packages/
+│   └── proto/          # protobuf と buf 設定（FE↔BE 契約）
 ├── docs/               # ドキュメント
-├── Taskfile.yml        # 横断タスクの入口（dev/build/test/lint/migrate）
+├── Taskfile.yml        # 言語横断タスクの入口（dev/build/test/lint/migrate）
 ├── docker-compose.yml  # ローカル PostgreSQL
 ├── .gitignore
 ├── CLAUDE.md
@@ -19,14 +21,14 @@ kanjo-kun/
 
 **設定ファイルは言語ごとに分離する。** FE と BE は言語が異なるため、言語固有の設定は各サブプロジェクトに置き、root には言語横断のもの（Taskfile・docker-compose）だけを置く。
 
-- `frontend/` は**単独の pnpm プロジェクト**。JS パッケージが1つのため pnpm workspaces は使わない（Go は pnpm の対象外で、workspaces を置いても意味をなさない）。将来 `packages/` に共有 TS パッケージを切る段階で workspaces を導入する。
-- `backend/` は自前の `go.mod` を持つ単一 Go モジュール。
+- `apps/frontend/` は**単独の pnpm プロジェクト**。`packages/proto/` は当面 `.proto` と buf 設定のみを保持し、生成物は各アプリ配下（`apps/frontend/src/shared/gen`・`apps/backend/internal/gen`）へ出力するため、消費される TS パッケージではない。したがって pnpm workspaces はまだ導入しない（Go は pnpm の対象外）。`packages/` 配下を TS パッケージとして import する段階で workspaces を導入する。
+- `apps/backend/` は自前の `go.mod` を持つ単一 Go モジュール。
 - 横断コマンド（両言語の build/test/lint 等）は Taskfile に集約する（Turborepo/Nx は使わない）。
 
-## backend/
+## apps/backend/
 
 ```
-backend/
+apps/backend/
 ├── go.mod
 ├── mise.toml           # Go のバージョン
 ├── .golangci.yml       # golangci-lint 設定
@@ -45,12 +47,12 @@ backend/
 - `internal/` 内は技術レイヤ（handlers/services/repositories）ではなく**ドメイン/アダプタ単位**で分割する。依存の向きとドメインの純粋性は [architecture.md](architecture.md) の「設計上の不変条件」に従う。
 - `pkg/` は使わない。MVP は上記より浅く始めてよい（単一パッケージのファイル分割から始め、必要になったら分割）。
 
-## frontend/
+## apps/frontend/
 
 FSD のレイヤ構成。import は下位方向のみ、同一レイヤのスライス間は public API 経由。
 
 ```
-frontend/
+apps/frontend/
 ├── package.json
 ├── pnpm-lock.yaml
 ├── mise.toml           # Node のバージョン
@@ -71,16 +73,16 @@ frontend/
 - Storybook の stories はコンポーネントに co-locate する（`*.stories.tsx`）。
 - スライス粒度の詳細は別途定める。
 
-## proto/
+## packages/proto/
 
 ```
-proto/
+packages/proto/
 ├── buf.yaml            # buf のモジュール・lint 設定
 ├── buf.gen.yaml        # コード生成設定（Go / TS の出力先）
 └── kanjo/v1/*.proto    # サービス・メッセージ定義（バージョン付き）
 ```
 
-`buf generate` で Go stub（`backend/internal/gen/`）と TS クライアント（`frontend/src/shared/gen/`）を生成する。生成物は編集しない。buf は proto を入力に両言語へ生成する契約ツールなので、proto と同梱する。
+`buf generate` で Go stub（`apps/backend/internal/gen/`）と TS クライアント（`apps/frontend/src/shared/gen/`）を生成する。生成物は編集しない。buf は proto を入力に両言語へ生成する契約ツールなので、proto と同梱する。
 
 ## ドメイン・機能とディレクトリの対応
 

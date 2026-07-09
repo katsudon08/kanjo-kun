@@ -4,20 +4,20 @@
 
 ## 全体像
 
-React SPA と Go API を Connect-RPC で連携し、PostgreSQL に永続する（クライアント完結ではない）。FE と BE は `proto/` の protobuf を型の単一の源として共有する。
+React SPA と Go API を Connect-RPC で連携し、PostgreSQL に永続する（クライアント完結ではない）。FE と BE は `packages/proto/` の protobuf を型の単一の源として共有する。
 
 ```mermaid
 flowchart LR
     User(["ユーザー<br/>（ブラウザ）"])
 
-    subgraph FE["frontend/ — React SPA（FSD）"]
+    subgraph FE["apps/frontend/ — React SPA（FSD）"]
         direction TB
         UI["画面・UI<br/>shadcn/ui · React Flow"]
         Client["TS クライアント（生成）<br/>+ TanStack Query"]
         UI --> Client
     end
 
-    subgraph BE["backend/ — Go API"]
+    subgraph BE["apps/backend/ — Go API"]
         direction TB
         Handler["Connect handler"]
         Domain["ドメイン internal/kanjo<br/>割り勘・店舗/債務グラフ"]
@@ -26,7 +26,7 @@ flowchart LR
     end
 
     DB[("PostgreSQL")]
-    Proto["proto/*.proto<br/>型の単一の源（SSOT）"]
+    Proto["packages/proto/*.proto<br/>型の単一の源（SSOT）"]
 
     User -->|操作| UI
     Client -->|"Connect-RPC（JSON / HTTP）"| Handler
@@ -35,7 +35,7 @@ flowchart LR
     Proto -. "buf generate" .-> Handler
 ```
 
-*実線 = 実行時のリクエスト／データの流れ。点線 = ビルド時に `proto/` の1定義から Go と TS を生成し、FE↔BE の型を一致させる。*
+*実線 = 実行時のリクエスト／データの流れ。点線 = ビルド時に `packages/proto/` の1定義から Go と TS を生成し、FE↔BE の型を一致させる。*
 
 ## 技術スタック
 
@@ -62,7 +62,7 @@ flowchart LR
 
 ### モノレポ / ビルド
 - Taskfile（go-task）— 横断タスクの入口
-- pnpm — JS パッケージ管理（frontend は単独プロジェクト）
+- pnpm — JS パッケージ管理（apps/frontend は単独プロジェクト）
 - mise — Go / Node のバージョン固定（各サブプロジェクトに配置）
 
 ### テスト
@@ -87,7 +87,7 @@ flowchart LR
 読み始める場所。詳細な配置は [directory-structure.md](directory-structure.md)。ファイル名はシンボル検索で辿る。
 
 ```
-backend/
+apps/backend/
 ├── cmd/kanjo/main.go       # 入口。依存を結線してサーバ起動
 └── internal/
     ├── kanjo/              # ★ ドメインの中核: 型 + 店舗/債務グラフの算法（純関数）
@@ -95,12 +95,12 @@ backend/
     ├── connect/            # Connect handler（RPC の入口）
     ├── kotra/ paypay/ ocr/ # 送金・レシート AI の外部連携（phase-2）
     └── gen/                # buf 生成の Go stub
-frontend/src/
+apps/frontend/src/
 ├── app/                    # 入口。プロバイダとルート結線
 ├── widgets/                # 店舗グラフ・債務グラフの描画（React Flow）
 ├── features/ entities/     # ユーザー操作 / ドメインエンティティ
 └── shared/                 # ui・lib・api・生成クライアント
-proto/kanjo/v1/             # FE↔BE 契約の protobuf（buf generate の入力）
+packages/proto/kanjo/v1/    # FE↔BE 契約の protobuf（buf generate の入力）
 ```
 
 ## 設計上の不変条件
@@ -109,7 +109,7 @@ proto/kanjo/v1/             # FE↔BE 契約の protobuf（buf generate の入�
 
 - **ドメインは外部を知らない**。`internal/kanjo` は DB・HTTP・protobuf に依存しない。DB/RPC はアダプタ（`postgres`/`connect`）に閉じる。
 - **依存は一方向**。アダプタ → ドメイン。逆向きの依存を作らない。
-- **型の単一の源は `proto/`**。FE↔BE の型は protobuf から生成し、手書きの型で二重定義しない。
+- **型の単一の源は `packages/proto/`**。FE↔BE の型は protobuf から生成し、手書きの型で二重定義しない。
 - **フロントの import は下位レイヤ方向のみ**（FSD）。同一レイヤのスライス間は public API 経由。
 - **金額は整数（円）**。浮動小数点で金額を扱わない。
 - **導出値は永続しない**。永続するのは支払い済み額のみ。金額・残額・精算完了は常に導出する。計算の正は `internal/kanjo`。
