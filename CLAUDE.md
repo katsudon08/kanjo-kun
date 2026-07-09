@@ -25,15 +25,16 @@
 
 ## 技術スタック
 
-未定（FE/BE/言語/フレームワーク/DB/インフラは一切決まっていない）。今後 `docs/adr/` に ADR として記録し、決定後に `docs/architecture.md` を作成して記載する。
+Web SPA（React + TypeScript / Vite）＋ Go API（Connect-RPC / buf）＋ PostgreSQL を**モノレポ**で構成。FE は Feature-Sliced Design、BE はドメインルート構成。技術スタックの確定内容・アーキテクチャは [docs/architecture.md](docs/architecture.md) を参照。
 
 ## ディレクトリ構成
 
-（技術スタック決定後に記載 / docs/architecture.md 参照）
+`apps/backend/`（Go）＋ `apps/frontend/`（React SPA・FSD）＋ `packages/proto/`（protobuf）の分離型モノレポ。全体像は [docs/architecture.md](docs/architecture.md)、各ディレクトリの役割・配置ルールは [docs/directory-structure.md](docs/directory-structure.md) を参照。
 
 - **Git運用**: GitHub Flow。`main` + 機能ブランチ → PR でマージ。
 - **コミット / ブランチ / PR**: 形式は縛らない。変更内容が分かれば自由でよい（厳密な規約・検証は設けない）。ブランチ名に対応 issue 番号を含めると追跡しやすい（任意の推奨）。
 - **禁止事項（必ず守る）**:
+  - **コミット / push / PR は、ユーザーの明示的な許可を得てから行う**（許可なく勝手に実行しない。レビュー前に勝手にコミットしない）。
   - `main` への直コミット / 直 push は禁止（必ず機能ブランチ → PR 経由）。
   - Co-Authored-By 等のトレーラ・署名（共著者表記・ツール署名）は付与しない（コミット・PR・issue いずれも）。
 
@@ -41,13 +42,15 @@
 
 ## よく使うコマンド
 
-（技術スタック決定後に記載 / docs/architecture.md 参照）
+（横断コマンドは `Taskfile.yml` に集約予定。整備は後続 issue）
 
 ## ドキュメント
 
 ドキュメントの案内は [docs/README.md](docs/README.md) を参照。主なもの:
 
+- [docs/architecture.md](docs/architecture.md) — 技術スタック・アーキテクチャ・ディレクトリ構成の定義
+- [docs/directory-structure.md](docs/directory-structure.md) — ディレクトリ構成の詳細
 - [docs/requirements.md](docs/requirements.md) — 要件定義
 - [docs/domain.md](docs/domain.md) — ドメイン用語・ドメインモデル
 - [docs/workflow.md](docs/workflow.md) — 開発フロー
-- [docs/adr/](docs/adr/) — アーキテクチャ決定記録（ADR）。技術スタックは今後ここに記録する
+- [docs/adr/](docs/adr/) — アーキテクチャ決定記録（ADR）
