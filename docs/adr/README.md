@@ -38,4 +38,4 @@ stateDiagram-v2
 
 ## 一覧
 
-- まだ ADR はありません。最初の ADR として技術スタックの選定（`0001-...`）を記録する予定です。
+- [0001-select-tech-stack.md](0001-select-tech-stack.md) — 技術スタックの選定（PR #4 のレビュー反映を含む）
