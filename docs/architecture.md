@@ -43,10 +43,10 @@ flowchart LR
 - React + TypeScript — 言語・UI
 - Vite — ビルド / dev サーバ
 - TanStack Router + TanStack Query — ルーティング・サーバ状態
-- Zustand — クライアント状態
+- Jotai — クライアント状態（アトミック）
 - Tailwind CSS + shadcn/ui — スタイリング・UI コンポーネント
 - React Flow — グラフ可視化
-- React Hook Form + Zod — フォーム・バリデーション
+- TanStack Form + Zod（v4）— フォーム・バリデーション
 - 設計: **Feature-Sliced Design (FSD)**
 
 ### バックエンド
@@ -61,18 +61,19 @@ flowchart LR
 - Connect-RPC + buf（protobuf）— 型の単一の源。Go stub と TS クライアントを生成
 
 ### モノレポ / ビルド
-- Taskfile（go-task）— 横断タスクの入口
+- Taskfile（go-task）— 言語横断タスクの入口（root）。FE タスクは vp へ委譲
+- vp（Vite+）— FE ツールチェーンの入口（`apps/frontend` 内）。Vite / Vitest / oxlint / oxfmt を統合
 - pnpm — JS パッケージ管理（apps/frontend は単独プロジェクト）
 - mise — Go / Node のバージョン固定（各サブプロジェクトに配置）
 
 ### テスト
-- Vitest + Testing Library — FE ユニット / コンポーネント
+- Vitest（vp 経由）+ Testing Library — FE ユニット / コンポーネント
 - Playwright — E2E
 - Storybook — コンポーネントカタログ
 - testing + testify + testcontainers-go — Go
 
 ### 開発ツール
-- Biome — JS/TS の lint・format
+- oxlint + oxfmt（vp 経由）— JS/TS の lint・format
 - gofmt + golangci-lint — Go の lint・format
 - lefthook — Git hooks
 - Docker Compose — ローカル PostgreSQL

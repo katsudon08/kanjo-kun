@@ -27,6 +27,9 @@ apps/frontend/playwright-report/
 apps/frontend/test-results/
 *.tsbuildinfo
 
+# vp（Vite+）キャッシュ（実導入時に出力先を確認して調整）
+apps/frontend/.vite-plus/
+
 # Go（テストバイナリ・カバレッジ・ビルド成果物・ワークスペース）
 *.test
 *.out

@@ -23,7 +23,7 @@ kanjo-kun/
 
 - `apps/frontend/` は**単独の pnpm プロジェクト**。`packages/proto/` は当面 `.proto` と buf 設定のみを保持し、生成物は各アプリ配下（`apps/frontend/src/shared/gen`・`apps/backend/internal/gen`）へ出力するため、消費される TS パッケージではない。したがって pnpm workspaces はまだ導入しない（Go は pnpm の対象外）。`packages/` 配下を TS パッケージとして import する段階で workspaces を導入する。
 - `apps/backend/` は自前の `go.mod` を持つ単一 Go モジュール。
-- 横断コマンド（両言語の build/test/lint 等）は Taskfile に集約する（Turborepo/Nx は使わない）。
+- 横断コマンド（両言語の build/test/lint 等）は Taskfile に集約する（Turborepo/Nx は使わない）。FE のツールチェーンは `apps/frontend` 内の vp（Vite+）に集約し、Taskfile の FE タスクは vp へ委譲する。
 
 ## apps/backend/
 
@@ -57,8 +57,8 @@ apps/frontend/
 ├── pnpm-lock.yaml
 ├── mise.toml           # Node のバージョン
 ├── tsconfig.json
-├── vite.config.ts
-├── biome.json          # JS/TS の lint・format
+├── vite.config.ts      # Vite 設定（vp が配下で使用）
+├── .oxlintrc.json      # oxlint 設定（format は oxfmt / vp fmt）
 ├── .storybook/         # Storybook 設定
 └── src/
     ├── app/            # プロバイダ（Query/Router）・グローバルスタイル・ルート結線
@@ -69,9 +69,10 @@ apps/frontend/
     └── shared/         # 業務非依存: ui / lib / api / config / gen（生成クライアント）
 ```
 
-- 各スライス内は `ui` / `model` / `api` / `lib` の segment で分ける。状態（Zustand）は `model`。
+- 各スライス内は `ui` / `model` / `api` / `lib` の segment で分ける。状態（Jotai の atom）は `model`。
 - Storybook の stories はコンポーネントに co-locate する（`*.stories.tsx`）。
 - スライス粒度の詳細は別途定める。
+- FE のツールチェーンは vp（Vite+）に集約する（`vp dev`/`build`=Vite、`vp test`=Vitest、`vp lint`=oxlint、`vp fmt`=oxfmt）。ランタイム/パッケージ管理は mise・pnpm が担い、vp のそれらの機能は使わない。
 
 ## packages/proto/
 
